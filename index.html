@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="kk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 Наурыз мерекесі</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --main-color: #ff69b4;
+            --bg-gradient: linear-gradient(135deg, #ffe4e1 0%, #ffdae0 100%);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            z-index: 999;
+        }
+
+        input {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid var(--main-color);
+            border-radius: 25px;
+            margin: 15px 0;
+            width: 80%;
+        }
+
+        button {
+            background: var(--main-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .content-container {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+
+        #userPhoto {
+            height: 400px;
+            width: 400px;
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        .user-photo {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .error-message {
+            color: #ff4444;
+            margin-top: 10px;
+            height: 20px;
+        }
+
+        .gift-box {
+            background: var(--main-color);
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            position: relative;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .gift-box::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: white;
+            border-radius: 10px 10px 0 0;
+            transform-origin: top center;
+            transition: transform 0.3s;
+        }
+
+        .gift-box:hover {
+            background-color: #ff0080;
+        }
+
+        .hearts-container {
+            display: none;
+        }
+        .heart {
+            color: var(--main-color);
+            font-size: 20px;
+            margin: 5px;
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .flower {
+            position: fixed;
+            width: 100px;
+            z-index: 1000;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .flower.left {
+            width: 300px;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: -999;
+        }
+
+        .flower.right {
+            width: 300px;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: -999;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(-50%) translateX(0);
+            }
+
+            50% {
+                transform: translateY(-60%) translateX(10px);
+            }
+
+            100% {
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            20%,
+            40%,
+            60%,
+            80%,
+            100% {
+                transform: scale(1);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: scale(1.3);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .flower.left,
+            .flower.right {
+                width: 150px;
+            }
+
+            .login-box {
+                padding: 20px;
+                max-width: 95%;
+            }
+
+            input {
+                width: 90%;
+            }
+
+            #userPhoto {
+                width: 250px;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container" id="loginContainer">
+        <div class="login-box animate__animated">
+            <h1 style="color: var(--main-color);">🌸 8 Наурыз мерекесі! 🌸</h1>
+            <input type="text" id="nameInput" placeholder="Атыңызды енгізіңіз">
+            <button onclick="checkUser()">Кіру</button>
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+    </div>
+
+    <div class="content-container" id="contentContainer">
+        <img id="userPhoto" class="user-photo animate__animated">
+        <div class="message-box animate__animated">
+            <h2 id="userName" style="color: var(--main-color);"></h2>
+            <p id="userMessage"></p>
+        </div>
+        <div class="gift-box" onclick="openGiftBox()">🎁</div>
+        <div class="hearts-container" id="heartsContainer">
+            <div class="heart">❤️ 8 Наурыз құтты болсын</div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" autoplay>
+        <source src="movie/Қазыбек Құрайыш – Мінезің көркем 2019_muztok.com.mp3" type="audio/mpeg">
+    </audio>
+    <img src="img/Flowers.png" class="flower left animate__animated" alt="Flower Left">
+    <img src="img/Flowers.png" class="flower right animate__animated" alt="Flower Right">
+    <script>
+        let womenData = [];
+
+        async function loadData() {
+            try {
+                const response = await fetch('data/data.json');
+                womenData = await response.json();
+            } catch (error) {
+                console.error('Деректер жүктелмеді:', error);
+            }
+        }
+
+        function checkUser() {
+            const inputName = document.getElementById('nameInput').value.trim();
+            const user = womenData.find(u =>
+                u.name.toLowerCase() === inputName.toLowerCase()
+            );
+
+            if (!user) {
+                showError('Атыңыз тізімде жоқ!');
+                return;
+            }
+
+            showContent(user);
+        }
+
+        function showContent(user) {
+            // Анимацияларды бастау
+            document.getElementById('loginContainer').classList.add('animate__fadeOut');
+            document.getElementById('contentContainer').style.display = 'block';
+
+            // Мәліметтерді толтыру
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userMessage').textContent = user.message;
+
+            // Фотоны орнату
+            const photoElement = document.getElementById('userPhoto');
+            if (user.photo) {
+                photoElement.src = user.photo;
+                photoElement.style.display = 'block';
+                photoElement.classList.add('animate__zoomIn');
+            } else {
+                photoElement.style.display = 'none';
+            }
+
+            // Анимацияларды қосу
+            setTimeout(() => {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('contentContainer').classList.add('animate__fadeIn');
+                startConfetti();
+                playMusic();
+            }, 500);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('animate__shakeX');
+            setTimeout(() => errorDiv.classList.remove('animate__shakeX'), 1000);
+        }
+
+        function startConfetti() {
+            // Ескі конфеттилерді тазарту
+            document.querySelectorAll('.confetti').forEach(c => c.remove());
+
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+
+                // Кездейсоқ параметрлер
+                const size = Math.random() * 7 + 8; // 8px - 15px
+                const delay = Math.random() * 5;
+                const duration = 3 + Math.random() * 5;
+                const color = `hsl(${Math.random() * 360}, 90%, 60%)`;
+
+                confetti.style.cssText = `
+                                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                left: ${Math.random() * 100}vw;
+                top: -50px;
+                animation: confetti-fall ${duration}s ${delay}s linear infinite;
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                transform: rotate(${Math.random() * 360}deg);
+        `;
+
+                document.body.appendChild(confetti);
+            }
+        }
+
+        function playMusic() {
+            const audio = document.getElementById('bgMusic');
+            audio.volume = 0.3;
+            audio.play().catch(() => {
+                const playBtn = document.createElement('button');
+                playBtn.textContent = '🎵 Ойнату';
+                playBtn.onclick = () => audio.play();
+                playBtn.style.position = 'fixed';
+                playBtn.style.bottom = '20px';
+                playBtn.style.left = '20px';
+                document.body.appendChild(playBtn);
+            });
+        }
+
+        function openGiftBox() {
+            const giftBox = document.querySelector('.gift-box');
+            const heartsContainer = document.getElementById('heartsContainer');
+
+            giftBox.classList.toggle('open');
+            heartsContainer.style.display = heartsContainer.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Инициализация
+        window.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            document.getElementById('nameInput').focus();
+        });
+
+        // Enter пернесінің басуы
+        document.getElementById('nameInput').addEventListener('keypress', e => {
+            if (e.key === 'Enter') checkUser();
+        });
+    </script>
+</body>
+
+</html>
