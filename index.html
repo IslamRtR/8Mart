@@ -166,6 +166,7 @@
         .hearts-container {
             display: none;
         }
+
         .heart {
             color: var(--main-color);
             font-size: 20px;
@@ -195,6 +196,28 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: -999;
+        }
+
+        /* Ескі стиль */
+        input {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid var(--main-color);
+            border-radius: 25px;
+            margin: 15px 0;
+            width: 80%;
+        }
+
+        /* Жаңа стиль */
+        select {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid var(--main-color);
+            border-radius: 25px;
+            margin: 15px 0;
+            width: 80%;
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff69b4"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 20px center/15px;
         }
 
         @keyframes float {
@@ -259,7 +282,9 @@
     <div class="login-container" id="loginContainer">
         <div class="login-box animate__animated">
             <h1 style="color: var(--main-color);">🌸 8 Наурыз мерекесі! 🌸</h1>
-            <input type="text" id="nameInput" placeholder="Атыңызды енгізіңіз">
+            <select id="nameSelect">
+                <option value="" disabled selected>Атыңызды таңдаңыз</option>
+            </select>
             <button onclick="checkUser()">Кіру</button>
             <div id="errorMessage" class="error-message"></div>
         </div>
@@ -285,28 +310,44 @@
     <script>
         let womenData = [];
 
+        // Деректерді жүктеу функциясын өзгерту
         async function loadData() {
             try {
                 const response = await fetch('data/data.json');
                 womenData = await response.json();
+                populateSelectOptions();
             } catch (error) {
                 console.error('Деректер жүктелмеді:', error);
             }
         }
 
-        function checkUser() {
-            const inputName = document.getElementById('nameInput').value.trim();
-            const user = womenData.find(u =>
-                u.name.toLowerCase() === inputName.toLowerCase()
-            );
+        // Select элементін толтыру функциясы
+        function populateSelectOptions() {
+            const nameSelect = document.getElementById('nameSelect');
+            womenData.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.name;
+                option.textContent = user.name;
+                nameSelect.appendChild(option);
+            });
+        }
 
-            if (!user) {
-                showError('Атыңыз тізімде жоқ!');
+        // Пайдаланушыны тексеру функциясын өзгерту
+        function checkUser() {
+            const selectedName = document.getElementById('nameSelect').value;
+            if (!selectedName) {
+                showError('Атыңызды таңдаңыз!');
                 return;
             }
 
+            const user = womenData.find(u => u.name === selectedName);
             showContent(user);
         }
+
+        // Enter пернесінің басуын өшіру
+        document.getElementById('nameSelect').addEventListener('keypress', e => {
+            if (e.key === 'Enter') e.preventDefault();
+        });
 
         function showContent(user) {
             // Анимацияларды бастау
